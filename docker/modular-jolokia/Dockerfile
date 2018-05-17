@@ -25,11 +25,13 @@ RUN jlink --module-path /jmods:$SYSTEM_JMODS --add-modules alterrebe.test --outp
 
 # Create the target container:
 FROM alpine
-COPY --from=builder /jre-native /app
 
 # Add Jolokia
 ADD https://repo1.maven.org/maven2/org/jolokia/jolokia-jvm/1.3.7/jolokia-jvm-1.3.7-agent.jar /
 RUN mv /jolokia-jvm-*.jar /jolokia.jar
+
+# Copy the Native JRE
+COPY --from=builder /jre-native /app
 
 EXPOSE 8080 8778
 ENTRYPOINT ["/app/bin/java", "-javaagent:/jolokia.jar=port=8778,host=0.0.0.0", "-m", "alterrebe.test"]

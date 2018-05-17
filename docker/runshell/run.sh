@@ -16,4 +16,4 @@ MEM_OPT="-Xmx$(( $MEMLIMIT * 70 / 100 ))m"
 
 JAVA_OPTS="-server $MEM_OPT"  # feel free to specify your GC of choice, etc.
 
-exec java $JAVA_OPTS -jar /test-server.jar
+exec java $JAVA_OPTS -javaagent:/jolokia.jar=port=8778,host=0.0.0.0 -jar /test-server.jar
